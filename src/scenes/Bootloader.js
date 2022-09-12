@@ -12,7 +12,7 @@ class Bootloader extends Phaser.Scene{
     preload() {
         this.load.path = './assets/';
         // this.load.image(['yoshif', 'yoshi']);
-        this.load.image(['alonso', 'bottas', 'checo', 'gasly', 'hamilton', 'leclerc', 'ricciardo', 'sainz', 'verstappen', 'russell']);
+        this.load.image(['alonso', 'bottas', 'checo', 'gasly', 'hamilton', 'leclerc', 'ricciardo', 'sainz', 'verstappen', 'russell', 'pista2']);
     }
 
     createOLD() {
@@ -80,6 +80,10 @@ class Bootloader extends Phaser.Scene{
     }
     create() {
         // this.yoshi = this.add.image(100, 100, "yoshi");
+        //FONDO
+        this.fondo = this.add.image(625, 500, "pista2");
+        this.fondo.setOrigin(0.5,0.5)
+        //TARJETAS DE MEMORAMA
         this.alonso = this.add.image(875, 600, "alonso").setInteractive();
         this.bottas = this.add.image(375, 150, "bottas").setInteractive();
         this.checo = this.add.image(625, 150, "checo").setInteractive();
