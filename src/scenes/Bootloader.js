@@ -135,6 +135,26 @@ class Bootloader extends Phaser.Scene{
         this.backRussell2 = this.add.image(375, 600, "back").setInteractive();
         this.backSainz2 = this.add.image(625, 825, "back").setInteractive();
         this.backVerstappen2 = this.add.image(1125, 600, "back").setInteractive();
+        this.backAlonso.name = "Alonso";
+        this.backBottas.name = "Bottas";
+        this.backCheco.name = "Checo";
+        this.backGasly.name = "Gasly";
+        this.backHamilton.name = "Hamilton";
+        this.backLeclerc.name = "Leclerc";
+        this.backRicciardo.name = "Ricciardo";
+        this.backRussell.name = "Russell";
+        this.backSainz.name = "Sainz";
+        this.backVerstappen.name = "Verstappen";
+        this.backAlonso2.name = "Alonso";
+        this.backBottas2.name = "Bottas";
+        this.backCheco2.name = "Checo";
+        this.backGasly2.name = "Gasly";
+        this.backHamilton2.name = "Hamilton";
+        this.backLeclerc2.name = "Leclerc";
+        this.backRicciardo2.name = "Ricciardo";
+        this.backRussell2.name = "Russell";
+        this.backSainz2.name = "Sainz";
+        this.backVerstappen2.name = "Verstappen";
         //ARREGLO QUE GUARDA LAS CUBIERTAS DE TARJETAS
         let cardsBack = [this.backAlonso, this.backBottas, this.backCheco, this.backGasly, this.backHamilton, this.backLeclerc, this.backRicciardo, this.backRussell, this.backSainz, this.backVerstappen, this.backAlonso2, this.backBottas2, this.backCheco2, this.backGasly2, this.backHamilton2, this.backLeclerc2, this.backRicciardo2, this.backRussell2, this.backSainz2, this.backVerstappen2];
         //FUNCIÓN QUE MODIFICA EL TAMAÑO Y ORIGEN DE LAS CUBIERTAS
@@ -163,237 +183,150 @@ class Bootloader extends Phaser.Scene{
         this.russell2.setOrigin(0.5,0.5);
         this.sainz2.setOrigin(0.5,0.5);
         this.verstappen2.setOrigin(0.5,0.5);
-
+        
+        this.backAlonso.name = 'Alonso'
         this.music = this.sound.add('Theme', {loop: true, volume: 0.1});
         // this.music.play() 
-        function verificarContador(){
+        function verificarContador(card){
             if(contador <= 2){
-                contadorOk= true;
+                // contadorOk= true;
+                // console.log("entro a if");
+                // console.log(card);
+                card.setAlpha(0); 
+                cardsInGame.push(card);
+                // console.log(cardsInGame);
             }else{
-                contadorOk = false;
+                // contadorOk = false;
+                console.log("No se pueden voltear más de dos tarjetas");
+                verificarMatch()
             }
-            return contadorOk;
+            // return contadorOk;
         }
+        console.log(this.backAlonso)
         //FUNCIÓN DE TRANSPARENCIA PARA LAS CUBIERTAS DE LAS TARJETAS
         this.backAlonso.on(eventos.POINTER_DOWN, function() {
             contador += 1;
-            if(verificarContador()){
-                console.log("entro a if");
-                console.log(contador);
-                this.setAlpha(0); 
-                cardsInGame.push(this.alonso);
-                console.log(cardsInGame); 
-            }else{
-                console.log("No se pueden voltear más de dos tarjetas");
-            }
+            verificarContador(this);
         });
         this.backBottas.on(eventos.POINTER_DOWN, function() {
             contador += 1;
-            if(verificarContador()){
-                console.log("entro a if");
-                console.log(contador);
-                this.setAlpha(0);
-                cardsInGame = [this.bottas];
-                console.log(cardsInGame);   
-            }else{
-                console.log("No se pueden voltear más de dos tarjetas");
-            }
+            verificarContador(this);
         });
         this.backCheco.on(eventos.POINTER_DOWN, function() {
             contador += 1;
-            if(verificarContador()){
-                console.log("entro a if");
-                console.log(contador);
-                this.setAlpha(0);
-                cardsInGame = [this.checo];
-                console.log(cardsInGame); 
-            }else{
-                console.log("No se pueden voltear más de dos tarjetas");
-            }
+            verificarContador(this);
         });
         this.backGasly.on(eventos.POINTER_DOWN, function() {
             contador += 1;
-            if(verificarContador()){
-                console.log("entro a if");
-                console.log(contador);
-                this.setAlpha(0); 
-                cardsInGame = [this.gasly];
-                console.log(cardsInGame);  
-            }else{
-                console.log("No se pueden voltear más de dos tarjetas");
-            }
+            verificarContador(this);
         });
         this.backHamilton.on(eventos.POINTER_DOWN, function() {
             contador += 1;
-            if(verificarContador()){
-                console.log("entro a if");
-                console.log(contador);
-                this.setAlpha(0);
-                cardsInGame = [this.hamilton];
-                console.log(cardsInGame);   
-            }else{
-                console.log("No se pueden voltear más de dos tarjetas");
-            }
+            verificarContador(this);
         });
         this.backLeclerc.on(eventos.POINTER_DOWN, function() {
             contador += 1;
-            if(verificarContador()){
-                console.log("entro a if");
-                console.log(contador);
-                this.setAlpha(0);
-                cardsInGame = [this.leclerc];
-                console.log(cardsInGame);   
-            }else{
-                console.log("No se pueden voltear más de dos tarjetas");
-            }
+            verificarContador(this);
         });
         this.backRicciardo.on(eventos.POINTER_DOWN, function() {
             contador += 1;
-            if(verificarContador()){
-                console.log("entro a if");
-                console.log(contador);
-                this.setAlpha(0);
-                cardsInGame = [this.ricciardo];
-                console.log(cardsInGame);   
-            }else{
-                console.log("No se pueden voltear más de dos tarjetas");
-            }
+            verificarContador(this);
         });
         this.backRussell.on(eventos.POINTER_DOWN, function() {
             contador += 1;
-            if(verificarContador()){
-                console.log("entro a if");
-                console.log(contador);
-                this.setAlpha(0);  
-            }else{
-                console.log("No se pueden voltear más de dos tarjetas");
-            }
+            verificarContador(this);
         });
         this.backSainz.on(eventos.POINTER_DOWN, function() {
             contador += 1;
-            if(verificarContador()){
-                console.log("entro a if");
-                console.log(contador);
-                this.setAlpha(0);  
-            }else{
-                console.log("No se pueden voltear más de dos tarjetas");
-            }
+            verificarContador(this);
         });
         this.backVerstappen.on(eventos.POINTER_DOWN, function() {
             contador += 1;
-            if(verificarContador()){
-                console.log("entro a if");
-                console.log(contador);
-                this.setAlpha(0);  
-            }else{
-                console.log("No se pueden voltear más de dos tarjetas");
-            }
+            verificarContador(this);
         });
         this.backAlonso2.on(eventos.POINTER_DOWN, function() {
             contador += 1;
-            if(verificarContador()){
-                console.log("entro a if");
-                console.log(contador);
-                this.setAlpha(0);  
-            }else{
-                console.log("No se pueden voltear más de dos tarjetas");
-            }
+            verificarContador(this);
         });
         this.backBottas2.on(eventos.POINTER_DOWN, function() {
             contador += 1;
-            if(verificarContador()){
-                console.log("entro a if");
-                console.log(contador);
-                this.setAlpha(0);  
-            }else{
-                console.log("No se pueden voltear más de dos tarjetas");
-            }
+            verificarContador(this);
         });
         this.backCheco2.on(eventos.POINTER_DOWN, function() {
             contador += 1;
-            if(verificarContador()){
-                console.log("entro a if");
-                console.log(contador);
-                this.setAlpha(0);
-            }else{
-                console.log("No se pueden voltear más de dos tarjetas");
-            }
+            verificarContador(this);
         });
         this.backGasly2.on(eventos.POINTER_DOWN, function() {
             contador += 1;
-            if(verificarContador()){
-                console.log("entro a if");
-                console.log(contador);
-                this.setAlpha(0);  
-            }else{
-                console.log("No se pueden voltear más de dos tarjetas");
-            }
+            verificarContador(this);
         });
         this.backHamilton2.on(eventos.POINTER_DOWN, function() {
             contador += 1;
-            if(verificarContador()){
-                console.log("entro a if");
-                console.log(contador);
-                this.setAlpha(0);  
-            }else{
-                console.log("No se pueden voltear más de dos tarjetas");
-            }
+            verificarContador(this);
         });
         this.backLeclerc2.on(eventos.POINTER_DOWN, function() {
             contador += 1;
-            if(verificarContador()){
-                console.log("entro a if");
-                console.log(contador);
-                this.setAlpha(0);  
-            }else{
-                console.log("No se pueden voltear más de dos tarjetas");
-            }
+            verificarContador(this);
         });
         this.backRicciardo2.on(eventos.POINTER_DOWN, function() {
             contador += 1;
-            if(verificarContador()){
-                console.log("entro a if");
-                console.log(contador);
-                this.setAlpha(0);  
-            }else{
-                console.log("No se pueden voltear más de dos tarjetas");
-            }
+            verificarContador(this);
         });
         this.backRussell2.on(eventos.POINTER_DOWN, function() {
             contador += 1;
-            if(verificarContador()){
-                console.log("entro a if");
-                console.log(contador);
-                this.setAlpha(0);  
-            }else{
-                console.log("No se pueden voltear más de dos tarjetas");
-            }
+            verificarContador(this);
         });
         this.backSainz2.on(eventos.POINTER_DOWN, function() {
             contador += 1;
-            if(verificarContador()){
-                console.log("entro a if");
-                console.log(contador);
-                this.setAlpha(0);  
-            }else{
-                console.log("No se pueden voltear más de dos tarjetas");
-            }
+            verificarContador(this);
         });
         this.backVerstappen2.on(eventos.POINTER_DOWN, function() {
             contador += 1;
-            if(verificarContador()){
-                console.log("entro a if");
-                console.log(contador);
-                this.setAlpha(0);  
-            }else{
-                console.log("No se pueden voltear más de dos tarjetas");
-            }
+            verificarContador(this);
         });
-
+        let contadorGanadas = 0
         //FUNCIÓN PARA VERIFICAR MATCH
         function verificarMatch(){
-            if(contador == 2){
-                //comparacion de tarjetas
+            if (cardsInGame[0].name == cardsInGame[1].name) {
+                console.log('match')
+                for (let i = 0; i < cardsBack.length; i++) {
+                    if (cardsBack[i] == cardsInGame[0]) {
+                        cardsBack.splice(i, 1)
+                        // console.log(cardsBack)
+                    }
+                    // if (cardsBack[i] == cardsInGame[1]) {
+                    //     cardsBack.splice(i, 1)
+                    //     console.log("soy tarjetas ->", cardsBack)
+                    // }
+                }
+                for (let i = 0; i < cardsBack.length; i++) {
+                    // if (cardsBack[i] == cardsInGame[0]) {
+                    //     cardsBack.splice(i, 1)
+                    //     // console.log(cardsBack)
+                    // }
+                    if (cardsBack[i] == cardsInGame[1]) {
+                        cardsBack.splice(i, 1)
+                        console.log("soy tarjetas ->", cardsBack)
+                    }
+                }
+                
+                for (let card of cardsBack) {
+                    card.setAlpha(1)
+                    contador = 0
+                }
+
+                cardsInGame = []
+                contadorGanadas += 1
+                console.log(contadorGanadas)
+            }
+            else {
+                console.log(cardsInGame[0].name, cardsInGame[1].name)
+                for (let card of cardsBack) {
+                    card.setAlpha(1)
+                    contador = 0
+                    console.log("no match")
+                }
+                cardsInGame = []
             }
         }
 
