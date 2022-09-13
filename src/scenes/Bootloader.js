@@ -12,7 +12,8 @@ class Bootloader extends Phaser.Scene{
     preload() {
         this.load.path = './assets/';
         // this.load.image(['yoshif', 'yoshi']);
-        this.load.image(['alonso', 'bottas', 'checo', 'gasly', 'hamilton', 'leclerc', 'ricciardo', 'sainz', 'verstappen', 'russell', 'pista2']);
+        this.load.image(['alonso', 'bottas', 'checo', 'gasly', 'hamilton', 'leclerc', 'ricciardo', 'sainz', 'verstappen', 'russell', 'pista2', 'back']);
+        this.load.audio('Theme', ['./music/Theme.mp3']);
     }
 
     createOLD() {
@@ -79,7 +80,7 @@ class Bootloader extends Phaser.Scene{
         });
     }
     create() {
-        // this.yoshi = this.add.image(100, 100, "yoshi");
+        const eventos = Phaser.Input.Events;
         //FONDO
         this.fondo = this.add.image(625, 500, "pista2");
         this.fondo.setOrigin(0.5,0.5)
@@ -104,6 +105,9 @@ class Bootloader extends Phaser.Scene{
         this.russell2 = this.add.image(375, 600, "russell").setInteractive();
         this.sainz2 = this.add.image(625, 825, "sainz").setInteractive();
         this.verstappen2 = this.add.image(1125, 600, "verstappen").setInteractive();
+        this.back = this.add.image(125, 150, "back").setInteractive();
+        this.back2 = this.add.image(375, 150, "back").setInteractive();
+
         this.alonso.setOrigin(0.5,0.5)
         this.bottas.setOrigin(0.5,0.5)
         this.checo.setOrigin(0.5,0.5)
@@ -124,21 +128,38 @@ class Bootloader extends Phaser.Scene{
         this.russell2.setOrigin(0.5,0.5)
         this.sainz2.setOrigin(0.5,0.5)
         this.verstappen2.setOrigin(0.5,0.5)
+        this.back.setOrigin(0.5,0.5)
+        this.back2.setOrigin(0.5,0.5)
+        this.back.setDisplaySize(200,200)
+        this.back2.setDisplaySize(200,200)
 
-        const eventos = Phaser.Input.Events;
-        const teclado = Phaser.Input.Keyboard;
-        this.input.on(eventos.POINTER_DOWN, () => {
-        this.input.mouse.requestPointerLock();
+        this.music = this.sound.add('Theme', {loop: true, volume: 0.1});
+        // this.music.play() 
+        
+
+        this.back.on(eventos.POINTER_DOWN, function() {
+            this.setAlpha(0)
         });
-        this.input.keyboard.addKey(teclado.KeyCodes.A).on('down', () => {
-        this.input.mouse.releasePointerLock();
+
+        this.back2.on(eventos.POINTER_DOWN, function() {
+            this.setAlpha(0)
         });
-        this.input.on(eventos.POINTER_MOVE, (evento) => {
-        if (this.input.mouse.locked) {
-        this.yoshi.x += evento.movementX;
-        this.yoshi.y += evento.movementY;
-        }
-        });
+
+
+        // const eventos = Phaser.Input.Events;
+        // const teclado = Phaser.Input.Keyboard;
+        // this.input.on(eventos.POINTER_DOWN, () => {
+        // this.input.mouse.requestPointerLock();
+        // });
+        // this.input.keyboard.addKey(teclado.KeyCodes.A).on('down', () => {
+        // this.input.mouse.releasePointerLock();
+        // });
+        // this.input.on(eventos.POINTER_MOVE, (evento) => {
+        // if (this.input.mouse.locked) {
+        // this.yoshi.x += evento.movementX;
+        // this.yoshi.y += evento.movementY;
+        // }
+        // });
     }
 
     update(time, delta) {
