@@ -20,7 +20,7 @@ class Bootloader extends Phaser.Scene{
     create() {
         //CONTADORES
         let contador = 0;
-        this.aciertos = 10;
+        this.aciertos = 0;
         //BANDERAS
         this.ganasteB=false;
         //TIMER
