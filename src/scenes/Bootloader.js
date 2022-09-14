@@ -11,9 +11,10 @@ class Bootloader extends Phaser.Scene{
     
     preload() {
         this.load.path = './assets/';
-        // this.load.image(['yoshif', 'yoshi']);
         this.load.image(['alonso', 'bottas', 'checo', 'gasly', 'hamilton', 'leclerc', 'ricciardo', 'sainz', 'verstappen', 'russell', 'pista2', 'back']);
-        this.load.audio('Theme', ['./music/Theme.mp3']);
+        this.load.audio('Theme', ['./Theme.mp3']);
+        this.load.audio('voltear', ['./transicion.mp3']);
+        this.load.audio('pasar', ['./pop.mp3']);
     }
 
     createOLD() {
@@ -80,19 +81,27 @@ class Bootloader extends Phaser.Scene{
         });
     }
     create() {
-        //BANDERAS
-        let match = false;
-        let noMatch = false;
+        //CONTADORES
         let contador = 0;
-        let contadorOk = false;
+        let aciertos = 0;
+        let errores = -1;
+        //TEXTO PUNTAJE
+        this.text = this.add.text(350,2,'',{fontFamily: 'Consolas',color: 'black',fontSize: '22px'})
+        .setDepth(5);
         //ARREGLO QUE GUARDA TARJETAS DESCUBIERTAS
         let cardsInGame = [];
-
         //CONSTANTE 
         const eventos = Phaser.Input.Events;
         //FONDO
         this.fondo = this.add.image(625, 500, "pista2");
-        this.fondo.setOrigin(0.5,0.5)
+        this.fondo.setOrigin(0.5,0.5);
+        //MÚSICA DE FONDO
+        this.music = this.sound.add('Theme', {loop: true, volume: 0.08});
+        //this.music.play();
+        //MÚSICA VOLTEAR TARJETA
+        this.voltear = this.sound.add('voltear', {loop:false,volume: 1}); 
+        //MÚSICA PASAR SOBRE TARJETA
+        this.pasar = this.sound.add('pasar', {loop:false,volume: 0.3});    
         //TARJETAS DE MEMORAMA
         this.alonso = this.add.image(875, 600, "alonso").setInteractive();
         this.bottas = this.add.image(375, 150, "bottas").setInteractive();
@@ -162,7 +171,6 @@ class Bootloader extends Phaser.Scene{
             card.setDisplaySize(200,200);
             card.setOrigin(0.5,0.5);
         }
-
         this.alonso.setOrigin(0.5,0.5);
         this.bottas.setOrigin(0.5,0.5);
         this.checo.setOrigin(0.5,0.5);
@@ -183,112 +191,152 @@ class Bootloader extends Phaser.Scene{
         this.russell2.setOrigin(0.5,0.5);
         this.sainz2.setOrigin(0.5,0.5);
         this.verstappen2.setOrigin(0.5,0.5);
-        
-        this.backAlonso.name = 'Alonso'
-        this.music = this.sound.add('Theme', {loop: true, volume: 0.1});
-        // this.music.play() 
-        function verificarContador(card){
+
+        let verificarContador = function(card){
             if(contador <= 2){
-                // contadorOk= true;
-                // console.log("entro a if");
-                // console.log(card);
                 card.setAlpha(0); 
                 cardsInGame.push(card);
-                // console.log(cardsInGame);
-            }else{
-                // contadorOk = false;
-                console.log("No se pueden voltear más de dos tarjetas");
-                verificarMatch()
+                if(contador == 2){
+                    timedEvent = this.time.delayedCall(3000, verificarMatch, [], this);
+                    //verificarMatch();
+                }
             }
-            // return contadorOk;
+            // }else{
+            //     console.log("No se pueden voltear más de dos tarjetas");
+                
+            // }
         }
-        console.log(this.backAlonso)
+
         //FUNCIÓN DE TRANSPARENCIA PARA LAS CUBIERTAS DE LAS TARJETAS
-        this.backAlonso.on(eventos.POINTER_DOWN, function() {
-            contador += 1;
-            verificarContador(this);
+        // this.backAlonso.on(eventos.POINTER_DOWN, function() {
+        //     contador += 1;
+        //     verificarContador(this);
+        //     this.voltear.play();
+        // });
+        // this.backBottas.on(eventos.POINTER_DOWN, function() {
+        //     contador += 1;
+        //     verificarContador(this);
+        //     this.voltear.play();
+        // });
+        // this.backCheco.on(eventos.POINTER_DOWN, function() {
+        //     contador += 1;
+        //     console.log(contador);
+        //     verificarContador(this);
+        // });
+        // this.backGasly.on(eventos.POINTER_DOWN, function() {
+        //     contador += 1;
+        //     verificarContador(this);
+        //     this.voltear.play();
+        // });
+        // this.backHamilton.on(eventos.POINTER_DOWN, function() {
+        //     contador += 1;
+        //     verificarContador(this);
+        //     this.voltear.play();
+        // });
+        // this.backLeclerc.on(eventos.POINTER_DOWN, function() {
+        //     contador += 1;
+        //     verificarContador(this);
+        //     this.voltear.play();
+        // });
+        // this.backRicciardo.on(eventos.POINTER_DOWN, function() {
+        //     contador += 1;
+        //     verificarContador(this);
+        //     this.voltear.play();
+        // });
+        // this.backRussell.on(eventos.POINTER_DOWN, function() {
+        //     contador += 1;
+        //     verificarContador(this);
+        //     this.voltear.play();
+        // });
+        // this.backSainz.on(eventos.POINTER_DOWN, function() {
+        //     contador += 1;
+        //     verificarContador(this);
+        //     this.voltear.play();
+        // });
+        // this.backVerstappen.on(eventos.POINTER_DOWN, function() {
+        //     contador += 1;
+        //     verificarContador(this);
+        //     this.voltear.play();
+        // });
+        // this.backAlonso2.on(eventos.POINTER_DOWN, function() {
+        //     contador += 1;
+        //     verificarContador(this);
+        //     this.voltear.play();
+        // });
+        // this.backBottas2.on(eventos.POINTER_DOWN, function() {
+        //     contador += 1;
+        //     verificarContador(this);
+        //     this.voltear.play();
+        // });
+        // this.backCheco2.on(eventos.POINTER_DOWN, function() {
+        //     contador += 1;
+        //     verificarContador(this);
+        //     this.voltear.play();
+        // });
+        // this.backGasly2.on(eventos.POINTER_DOWN, function() {
+        //     contador += 1;
+        //     verificarContador(this);
+        //     this.voltear.play();
+        // });
+        // this.backHamilton2.on(eventos.POINTER_DOWN, function() {
+        //     contador += 1;
+        //     verificarContador(this);
+        //     this.voltear.play();
+        // });
+        // this.backLeclerc2.on(eventos.POINTER_DOWN, function() {
+        //     contador += 1;
+        //     verificarContador(this);
+        //     this.voltear.play();
+        // });
+        // this.backRicciardo2.on(eventos.POINTER_DOWN, function() {
+        //     contador += 1;
+        //     verificarContador(this);
+        //     this.voltear.play();
+        // });
+        // this.backRussell2.on(eventos.POINTER_DOWN, function() {
+        //     contador += 1;
+        //     verificarContador(this);
+        //     this.voltear.play();
+        // });
+        // this.backSainz2.on(eventos.POINTER_DOWN, function() {
+        //     contador += 1;
+        //     verificarContador(this);
+        //     this.voltear.play();
+        // });
+        // this.backVerstappen2.on(eventos.POINTER_DOWN, function() {
+        //     contador += 1;
+        //     verificarContador(this);
+        //     this.voltear.play();
+        // });
+        //EVENTO PARA GIRAR TARJETAS
+        this.input.on(eventos.GAMEOBJECT_DOWN,(event,gameObject)=>{
+            if(cardsBack.includes(gameObject)){
+                contador += 1;
+                if(contador <= 2){
+                    
+                }
+                this.voltear.play();
+            }
+        });       
+        //EVENTO PARA MANEJAR EFECTO AL PASAR SOBRE LAS TARJETAS
+        this.input.on(eventos.GAMEOBJECT_OVER,(event,gameObject)=>{
+            if(cardsBack.includes(gameObject)){
+                this.pasar.play();
+                gameObject.setScale(0.22);
+            }
         });
-        this.backBottas.on(eventos.POINTER_DOWN, function() {
-            contador += 1;
-            verificarContador(this);
+        //EVENTO PARA MANEJAR EFECTO AL SALIR LAS TARJETAS
+        this.input.on(eventos.GAMEOBJECT_OUT,(event,gameObject)=>{
+            if(cardsBack.includes(gameObject)){
+                gameObject.setDisplaySize(200,200);
+            }
         });
-        this.backCheco.on(eventos.POINTER_DOWN, function() {
-            contador += 1;
-            verificarContador(this);
-        });
-        this.backGasly.on(eventos.POINTER_DOWN, function() {
-            contador += 1;
-            verificarContador(this);
-        });
-        this.backHamilton.on(eventos.POINTER_DOWN, function() {
-            contador += 1;
-            verificarContador(this);
-        });
-        this.backLeclerc.on(eventos.POINTER_DOWN, function() {
-            contador += 1;
-            verificarContador(this);
-        });
-        this.backRicciardo.on(eventos.POINTER_DOWN, function() {
-            contador += 1;
-            verificarContador(this);
-        });
-        this.backRussell.on(eventos.POINTER_DOWN, function() {
-            contador += 1;
-            verificarContador(this);
-        });
-        this.backSainz.on(eventos.POINTER_DOWN, function() {
-            contador += 1;
-            verificarContador(this);
-        });
-        this.backVerstappen.on(eventos.POINTER_DOWN, function() {
-            contador += 1;
-            verificarContador(this);
-        });
-        this.backAlonso2.on(eventos.POINTER_DOWN, function() {
-            contador += 1;
-            verificarContador(this);
-        });
-        this.backBottas2.on(eventos.POINTER_DOWN, function() {
-            contador += 1;
-            verificarContador(this);
-        });
-        this.backCheco2.on(eventos.POINTER_DOWN, function() {
-            contador += 1;
-            verificarContador(this);
-        });
-        this.backGasly2.on(eventos.POINTER_DOWN, function() {
-            contador += 1;
-            verificarContador(this);
-        });
-        this.backHamilton2.on(eventos.POINTER_DOWN, function() {
-            contador += 1;
-            verificarContador(this);
-        });
-        this.backLeclerc2.on(eventos.POINTER_DOWN, function() {
-            contador += 1;
-            verificarContador(this);
-        });
-        this.backRicciardo2.on(eventos.POINTER_DOWN, function() {
-            contador += 1;
-            verificarContador(this);
-        });
-        this.backRussell2.on(eventos.POINTER_DOWN, function() {
-            contador += 1;
-            verificarContador(this);
-        });
-        this.backSainz2.on(eventos.POINTER_DOWN, function() {
-            contador += 1;
-            verificarContador(this);
-        });
-        this.backVerstappen2.on(eventos.POINTER_DOWN, function() {
-            contador += 1;
-            verificarContador(this);
-        });
-        let contadorGanadas = 0
+
         //FUNCIÓN PARA VERIFICAR MATCH
         function verificarMatch(){
             if (cardsInGame[0].name == cardsInGame[1].name) {
                 console.log('match')
+                aciertos += 1;
                 for (let i = 0; i < cardsBack.length; i++) {
                     if (cardsBack[i] == cardsInGame[0]) {
                         cardsBack.splice(i, 1)
@@ -316,8 +364,8 @@ class Bootloader extends Phaser.Scene{
                 }
 
                 cardsInGame = []
-                contadorGanadas += 1
-                console.log(contadorGanadas)
+                // contadorGanadas += 1
+                // console.log(contadorGanadas)
             }
             else {
                 console.log(cardsInGame[0].name, cardsInGame[1].name)
@@ -326,29 +374,19 @@ class Bootloader extends Phaser.Scene{
                     contador = 0
                     console.log("no match")
                 }
+                errores +=1;
                 cardsInGame = []
             }
         }
-
-
-        // const eventos = Phaser.Input.Events;
-        // const teclado = Phaser.Input.Keyboard;
-        // this.input.on(eventos.POINTER_DOWN, () => {
-        // this.input.mouse.requestPointerLock();
-        // });
-        // this.input.keyboard.addKey(teclado.KeyCodes.A).on('down', () => {
-        // this.input.mouse.releasePointerLock();
-        // });
-        // this.input.on(eventos.POINTER_MOVE, (evento) => {
-        // if (this.input.mouse.locked) {
-        // this.yoshi.x += evento.movementX;
-        // this.yoshi.y += evento.movementY;
-        // }
-        // });
+        //TEXTO DE PUNTUACIÓN
+        this.puntaje = function(){
+            this.text.text =
+                `PUNTAJE    ACIERTOS:${aciertos}`;
+        }
     }
 
     update(time, delta) {
-        
+        this.puntaje();
     }
 }
 
