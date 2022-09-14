@@ -11,97 +11,40 @@ class Bootloader extends Phaser.Scene{
     
     preload() {
         this.load.path = './assets/';
-        this.load.image(['alonso', 'bottas', 'checo', 'gasly', 'hamilton', 'leclerc', 'ricciardo', 'sainz', 'verstappen', 'russell', 'pista2', 'back']);
+        this.load.image(['alonso', 'bottas', 'checo', 'gasly', 'hamilton', 'leclerc', 'ricciardo', 'sainz', 'verstappen', 'russell', 'pista2', 'back','ganaste']);
         this.load.audio('Theme', ['./Theme.mp3']);
-        this.load.audio('voltear', ['./transicion.mp3']);
+        this.load.audio('voltear', ['./voltear.wav']);
         this.load.audio('pasar', ['./pop.mp3']);
-    }
-
-    createOLD() {
-        // this.yoshi = this.add.image(100, 100, 'yoshi');
-        // this.yoshi = this.add.image(100, 100, "yoshi").setInteractive(); //atributo
-        // this.yoshif = this.add.image(100, 200, "yoshif").setInteractive(); //atributo
-        // this.yoshi.setOrigin(0.5,0.5);
-        // this.yoshi.setOrigin(1,1);
-        const eventos = Phaser.Input.Events;
-        // console.log(eventos);
-        this.input.on(eventos.POINTER_DOWN, (evento) => {
-            // console.log("Se ha hecho clic en el canvas");
-            // console.log(evento);
-        });
-        this.input.on(eventos.POINTER_UP, (evento) => {
-            // console.log("Se ha soltado el clic en el canvas");
-        });
-        // this.input.on(eventos.POINTER_MOVE, (evento) => {
-        //     console.log("Se ha movido el puntero sobre el canvas");
-        // });
-        // this.input.on(eventos.POINTER_MOVE, (evento) => {
-        //     this.yoshi.x = evento.worldX;
-        //     this.yoshi.y = evento.worldY;
-        // });
-        this.input.on(eventos.POINTER_MOVE, (evento) => {
-            if (evento.isDown)
-            {
-                this.yoshi.x = evento.worldX;
-                this.yoshi.y = evento.worldY;
-            }
-        });
-        this.input.on(eventos.GAME_OVER, (evento) => {
-            // console.log("Has entrado en el canvas");
-        });
-        this.input.on(eventos.GAME_OUT, (evento) => {
-            // console.log("Has salido del canvas");
-        });
-        this.input.on(eventos.POINTER_DOWN_OUTSIDE, (evento) => {
-            // console.log("Has hecho clic fuera del canvas");
-        });
-            this.input.on(eventos.POINTER_UP_OUTSIDE, (evento) => {
-            // console.log("Has soltado el clic fuera del canvas");
-        });
-
-        // this.input.on(eventos.GAMEOBJECT_DOWN, (pointer, gameObject) => {
-        //     console.log(pointer);
-        //     console.log(gameObject);
-        //     gameObject.setTint(0x00ff00);
-        // });
-        // this.input.on(eventos.GAMEOBJECT_UP, (pointer, gameObject) => {
-        //     gameObject.clearTint();
-        // });
-        // this.input.on(eventos.GAMEOBJECT_OVER, (pointer, gameObject) => {
-        //     gameObject.setTint(0x0000ff);
-        // });
-        //     this.input.on(eventos.GAMEOBJECT_OUT, (pointer, gameObject) => {
-        //     gameObject.clearTint();
-        // });
-        this.yoshif.on(eventos.POINTER_DOWN, function() {
-            this.setTint(0x0000ff);
-        });
-        this.yoshif.on(eventos.POINTER_UP, function() {
-            this.clearTint();
-        });
+        this.load.audio('motor', ['./motorSound.mp3']);
     }
     create() {
         //CONTADORES
         let contador = 0;
-        let aciertos = 0;
-        let errores = -1;
+        this.aciertos = 10;
+        //BANDERAS
+        this.ganasteB=false;
+        //TIMER
+        let timedEvent;
         //TEXTO PUNTAJE
-        this.text = this.add.text(350,2,'',{fontFamily: 'Consolas',color: 'black',fontSize: '22px'})
-        .setDepth(5);
+        this.text = this.add.text(450,2,'',{fontFamily: 'Consolas',color: 'black',fontSize: '30px'})
+        .setDepth(10);
         //ARREGLO QUE GUARDA TARJETAS DESCUBIERTAS
         let cardsInGame = [];
         //CONSTANTE 
         const eventos = Phaser.Input.Events;
-        //FONDO
-        this.fondo = this.add.image(625, 500, "pista2");
-        this.fondo.setOrigin(0.5,0.5);
         //MÚSICA DE FONDO
         this.music = this.sound.add('Theme', {loop: true, volume: 0.08});
-        //this.music.play();
+        this.music.play();
         //MÚSICA VOLTEAR TARJETA
-        this.voltear = this.sound.add('voltear', {loop:false,volume: 1}); 
+        this.voltear = this.sound.add('voltear', {loop:false,volume: 0.3}); 
         //MÚSICA PASAR SOBRE TARJETA
-        this.pasar = this.sound.add('pasar', {loop:false,volume: 0.3});    
+        this.pasar = this.sound.add('pasar', {loop:false,volume: 0.3});
+        //MÚSICA GANAR
+        this.motor = this.sound.add('motor', {loop:false,volume: 0.3});
+        //this.motor.play();
+        //FONDO
+        this.fondo = this.add.image(625, 500, "pista2");
+        this.fondo.setOrigin(0.5,0.5);  
         //TARJETAS DE MEMORAMA
         this.alonso = this.add.image(875, 600, "alonso").setInteractive();
         this.bottas = this.add.image(375, 150, "bottas").setInteractive();
@@ -164,6 +107,9 @@ class Bootloader extends Phaser.Scene{
         this.backRussell2.name = "Russell";
         this.backSainz2.name = "Sainz";
         this.backVerstappen2.name = "Verstappen";
+        //IMAGEN DE GANADOR
+        this.ganaste = this.add.image(650, 400, "ganaste").setInteractive() 
+        .setOrigin(0.5,0.5).setAlpha(0); 
         //ARREGLO QUE GUARDA LAS CUBIERTAS DE TARJETAS
         let cardsBack = [this.backAlonso, this.backBottas, this.backCheco, this.backGasly, this.backHamilton, this.backLeclerc, this.backRicciardo, this.backRussell, this.backSainz, this.backVerstappen, this.backAlonso2, this.backBottas2, this.backCheco2, this.backGasly2, this.backHamilton2, this.backLeclerc2, this.backRicciardo2, this.backRussell2, this.backSainz2, this.backVerstappen2];
         //FUNCIÓN QUE MODIFICA EL TAMAÑO Y ORIGEN DE LAS CUBIERTAS
@@ -192,128 +138,17 @@ class Bootloader extends Phaser.Scene{
         this.sainz2.setOrigin(0.5,0.5);
         this.verstappen2.setOrigin(0.5,0.5);
 
-        let verificarContador = function(card){
-            if(contador <= 2){
-                card.setAlpha(0); 
-                cardsInGame.push(card);
-                if(contador == 2){
-                    timedEvent = this.time.delayedCall(3000, verificarMatch, [], this);
-                    //verificarMatch();
-                }
-            }
-            // }else{
-            //     console.log("No se pueden voltear más de dos tarjetas");
-                
-            // }
-        }
-
-        //FUNCIÓN DE TRANSPARENCIA PARA LAS CUBIERTAS DE LAS TARJETAS
-        // this.backAlonso.on(eventos.POINTER_DOWN, function() {
-        //     contador += 1;
-        //     verificarContador(this);
-        //     this.voltear.play();
-        // });
-        // this.backBottas.on(eventos.POINTER_DOWN, function() {
-        //     contador += 1;
-        //     verificarContador(this);
-        //     this.voltear.play();
-        // });
-        // this.backCheco.on(eventos.POINTER_DOWN, function() {
-        //     contador += 1;
-        //     console.log(contador);
-        //     verificarContador(this);
-        // });
-        // this.backGasly.on(eventos.POINTER_DOWN, function() {
-        //     contador += 1;
-        //     verificarContador(this);
-        //     this.voltear.play();
-        // });
-        // this.backHamilton.on(eventos.POINTER_DOWN, function() {
-        //     contador += 1;
-        //     verificarContador(this);
-        //     this.voltear.play();
-        // });
-        // this.backLeclerc.on(eventos.POINTER_DOWN, function() {
-        //     contador += 1;
-        //     verificarContador(this);
-        //     this.voltear.play();
-        // });
-        // this.backRicciardo.on(eventos.POINTER_DOWN, function() {
-        //     contador += 1;
-        //     verificarContador(this);
-        //     this.voltear.play();
-        // });
-        // this.backRussell.on(eventos.POINTER_DOWN, function() {
-        //     contador += 1;
-        //     verificarContador(this);
-        //     this.voltear.play();
-        // });
-        // this.backSainz.on(eventos.POINTER_DOWN, function() {
-        //     contador += 1;
-        //     verificarContador(this);
-        //     this.voltear.play();
-        // });
-        // this.backVerstappen.on(eventos.POINTER_DOWN, function() {
-        //     contador += 1;
-        //     verificarContador(this);
-        //     this.voltear.play();
-        // });
-        // this.backAlonso2.on(eventos.POINTER_DOWN, function() {
-        //     contador += 1;
-        //     verificarContador(this);
-        //     this.voltear.play();
-        // });
-        // this.backBottas2.on(eventos.POINTER_DOWN, function() {
-        //     contador += 1;
-        //     verificarContador(this);
-        //     this.voltear.play();
-        // });
-        // this.backCheco2.on(eventos.POINTER_DOWN, function() {
-        //     contador += 1;
-        //     verificarContador(this);
-        //     this.voltear.play();
-        // });
-        // this.backGasly2.on(eventos.POINTER_DOWN, function() {
-        //     contador += 1;
-        //     verificarContador(this);
-        //     this.voltear.play();
-        // });
-        // this.backHamilton2.on(eventos.POINTER_DOWN, function() {
-        //     contador += 1;
-        //     verificarContador(this);
-        //     this.voltear.play();
-        // });
-        // this.backLeclerc2.on(eventos.POINTER_DOWN, function() {
-        //     contador += 1;
-        //     verificarContador(this);
-        //     this.voltear.play();
-        // });
-        // this.backRicciardo2.on(eventos.POINTER_DOWN, function() {
-        //     contador += 1;
-        //     verificarContador(this);
-        //     this.voltear.play();
-        // });
-        // this.backRussell2.on(eventos.POINTER_DOWN, function() {
-        //     contador += 1;
-        //     verificarContador(this);
-        //     this.voltear.play();
-        // });
-        // this.backSainz2.on(eventos.POINTER_DOWN, function() {
-        //     contador += 1;
-        //     verificarContador(this);
-        //     this.voltear.play();
-        // });
-        // this.backVerstappen2.on(eventos.POINTER_DOWN, function() {
-        //     contador += 1;
-        //     verificarContador(this);
-        //     this.voltear.play();
-        // });
         //EVENTO PARA GIRAR TARJETAS
         this.input.on(eventos.GAMEOBJECT_DOWN,(event,gameObject)=>{
             if(cardsBack.includes(gameObject)){
                 contador += 1;
+                cardsInGame.push(gameObject);
                 if(contador <= 2){
-                    
+                    gameObject.setAlpha(0);
+                    if(contador == 2){
+                        timedEvent = this.time.delayedCall(1000, verificarMatch, [], this);
+                        //verificarMatch();
+                    }        
                 }
                 this.voltear.play();
             }
@@ -333,60 +168,53 @@ class Bootloader extends Phaser.Scene{
         });
 
         //FUNCIÓN PARA VERIFICAR MATCH
-        function verificarMatch(){
+        let verificarMatch = function(){
             if (cardsInGame[0].name == cardsInGame[1].name) {
                 console.log('match')
-                aciertos += 1;
+                this.aciertos += 1;
                 for (let i = 0; i < cardsBack.length; i++) {
                     if (cardsBack[i] == cardsInGame[0]) {
                         cardsBack.splice(i, 1)
-                        // console.log(cardsBack)
                     }
-                    // if (cardsBack[i] == cardsInGame[1]) {
-                    //     cardsBack.splice(i, 1)
-                    //     console.log("soy tarjetas ->", cardsBack)
-                    // }
                 }
                 for (let i = 0; i < cardsBack.length; i++) {
-                    // if (cardsBack[i] == cardsInGame[0]) {
-                    //     cardsBack.splice(i, 1)
-                    //     // console.log(cardsBack)
-                    // }
                     if (cardsBack[i] == cardsInGame[1]) {
                         cardsBack.splice(i, 1)
                         console.log("soy tarjetas ->", cardsBack)
                     }
-                }
-                
+                }                
                 for (let card of cardsBack) {
                     card.setAlpha(1)
                     contador = 0
                 }
-
                 cardsInGame = []
-                // contadorGanadas += 1
-                // console.log(contadorGanadas)
             }
             else {
-                console.log(cardsInGame[0].name, cardsInGame[1].name)
+                //console.log(cardsInGame[0].name, cardsInGame[1].name)
                 for (let card of cardsBack) {
                     card.setAlpha(1)
                     contador = 0
                     console.log("no match")
                 }
-                errores +=1;
                 cardsInGame = []
             }
-        }
+        };
         //TEXTO DE PUNTUACIÓN
         this.puntaje = function(){
             this.text.text =
-                `PUNTAJE    ACIERTOS:${aciertos}`;
+                `PUNTAJE    ACIERTOS:${this.aciertos}`;
         }
     }
 
     update(time, delta) {
         this.puntaje();
+        if(this.aciertos == 10 && this.ganasteB == false){
+            this.ganasteB = true;
+            this.fondo.setDepth(5);
+            this.music.stop();
+            this.ganaste.setAlpha(1).setDepth(6);
+            this.motor.play();
+        }
     }
 }
 
