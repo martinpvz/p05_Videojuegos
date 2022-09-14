@@ -170,7 +170,7 @@ class Bootloader extends Phaser.Scene{
         //FUNCIÓN PARA VERIFICAR MATCH
         let verificarMatch = function(){
             if (cardsInGame[0].name == cardsInGame[1].name) {
-                console.log('match')
+                //console.log('match')
                 this.aciertos += 1;
                 for (let i = 0; i < cardsBack.length; i++) {
                     if (cardsBack[i] == cardsInGame[0]) {
@@ -180,7 +180,7 @@ class Bootloader extends Phaser.Scene{
                 for (let i = 0; i < cardsBack.length; i++) {
                     if (cardsBack[i] == cardsInGame[1]) {
                         cardsBack.splice(i, 1)
-                        console.log("soy tarjetas ->", cardsBack)
+                        //console.log("soy tarjetas ->", cardsBack)
                     }
                 }                
                 for (let card of cardsBack) {
@@ -194,7 +194,7 @@ class Bootloader extends Phaser.Scene{
                 for (let card of cardsBack) {
                     card.setAlpha(1)
                     contador = 0
-                    console.log("no match")
+                    //console.log("no match")
                 }
                 cardsInGame = []
             }
