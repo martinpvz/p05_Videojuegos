@@ -21,6 +21,10 @@ const config = {
                 "#2ecc71",
                 "#e74c3c", 
                 "#000000"]
+    },
+    scale: {
+        mode: Phaser.Scale.FIT,
+        autoCenter: Phaser.Scale.CENTER_BOTH,
     }
 };
 
