@@ -24,12 +24,22 @@ class Bootloader extends Phaser.Scene{
         //BANDERAS
         this.ganasteB=false;
         //TIMER
-        let timedEvent;
+        this.timedEvent;
         //TEXTO PUNTAJE
-        this.text = this.add.text(450,2,'',{fontFamily: 'Consolas',color: 'black',fontSize: '30px'})
+        this.text = this.add.text(250,2,'',{fontFamily: 'Consolas',color: 'black',fontSize: '30px'})
         .setDepth(10);
         //ARREGLO QUE GUARDA TARJETAS DESCUBIERTAS
         let cardsInGame = [];
+        //CREAR TIMER
+        this.tiempoRestante = 40
+        this.timer
+        // this.timedEvent = this.time.delayedCall(1000, reiniciar, [], this, loop:true);
+        this.timedEvent2 = this.time.addEvent({ delay: 1000, callback: reiniciar, callbackScope: this, loop: true });
+        function reiniciar() {
+            this.tiempoRestante -= 1
+            this.textoContador.setText('TIEMPO RESTANTE: ' + this.tiempoRestante);
+        }
+        this.textoContador = this.add.text(625, 2, 'TIEMPO RESTANTE: 40',{fontFamily: 'Consolas',color: 'black',fontSize: '30px'}).setDepth(10);;
         //CONSTANTE 
         const eventos = Phaser.Input.Events;
         //MÚSICA DE FONDO
@@ -44,7 +54,7 @@ class Bootloader extends Phaser.Scene{
         //this.motor.play();
         //FONDO
         this.fondo = this.add.image(625, 500, "pista2");
-        this.fondo.setOrigin(0.5,0.5);  
+        this.fondo.setOrigin(0.5,0.5);
         //TARJETAS DE MEMORAMA
         this.alonso = this.add.image(875, 600, "alonso").setInteractive();
         this.bottas = this.add.image(375, 150, "bottas").setInteractive();
@@ -66,6 +76,9 @@ class Bootloader extends Phaser.Scene{
         this.russell2 = this.add.image(375, 600, "russell").setInteractive();
         this.sainz2 = this.add.image(625, 825, "sainz").setInteractive();
         this.verstappen2 = this.add.image(1125, 600, "verstappen").setInteractive();
+        //LOGICA PARA TARJETAS RANDOM
+        let cards = [this.alonso, this.bottas, this.checo, this.gasly, this.hamilton, this.leclerc, this.ricciardo, this.russell, this.sainz, this.verstappen, this.alonso2, this.bottas2, this.checo2, this.gasly2, this.hamilton2, this.leclerc2, this.ricciardo2, this.russell2, this.sainz2, this.verstappen2];
+        let pares = [[875, 600], [375, 150], [625, 150], [875, 150], [1125,150], [125, 375], [375, 375], [625, 375], [875, 375], [125, 600], [375, 825], [625, 600], [875, 825], [125, 150], [1125, 825], [1125, 375], [125, 825], [375, 600], [625, 825], [1125, 600]]
         //CUBIERTAS DE TARJETAS
         this.backAlonso = this.add.image(875, 600, "back").setInteractive();
         this.backBottas = this.add.image(375, 150, "back").setInteractive();
@@ -112,6 +125,15 @@ class Bootloader extends Phaser.Scene{
         .setOrigin(0.5,0.5).setAlpha(0); 
         //ARREGLO QUE GUARDA LAS CUBIERTAS DE TARJETAS
         let cardsBack = [this.backAlonso, this.backBottas, this.backCheco, this.backGasly, this.backHamilton, this.backLeclerc, this.backRicciardo, this.backRussell, this.backSainz, this.backVerstappen, this.backAlonso2, this.backBottas2, this.backCheco2, this.backGasly2, this.backHamilton2, this.backLeclerc2, this.backRicciardo2, this.backRussell2, this.backSainz2, this.backVerstappen2];
+        //SE REALIZA EL RANDOM DE LAS CARTAS CON LA PARTE TRASERA Y DELANTERA
+        for (let i = 0; i < cards.length; i++) {
+            let random = Math.floor(Math.random() * pares.length);
+            cards[i].x = pares[random][0]
+            cards[i].y = pares[random][1]
+            cardsBack[i].x = pares[random][0]
+            cardsBack[i].y = pares[random][1]
+            pares.splice(random,1)
+        }
         //FUNCIÓN QUE MODIFICA EL TAMAÑO Y ORIGEN DE LAS CUBIERTAS
         for (let card of cardsBack){
             card.setDisplaySize(200,200);
@@ -146,7 +168,7 @@ class Bootloader extends Phaser.Scene{
                 if(contador <= 2){
                     gameObject.setAlpha(0);
                     if(contador == 2){
-                        timedEvent = this.time.delayedCall(1000, verificarMatch, [], this);
+                        this.timedEvent = this.time.delayedCall(1000, verificarMatch, [], this);
                         //verificarMatch();
                     }        
                 }
@@ -214,6 +236,9 @@ class Bootloader extends Phaser.Scene{
             this.music.stop();
             this.ganaste.setAlpha(1).setDepth(6);
             this.motor.play();
+        }
+        if(this.tiempoRestante == 0) {
+            this.scene.restart()
         }
     }
 }
